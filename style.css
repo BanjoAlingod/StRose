@@ -88,57 +88,38 @@ button {
 
 /* LOGO */
 
-.college-logo {
-    width: 58px;
-    height: 58px;
-    object-fit: contain;
-    display: block;
-}
-
 .logo {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.logo-symbol {
-    width: 45px;
-    height: 45px;
-
-    display: grid;
-    place-items: center;
-
+.college-logo {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
     border-radius: 50%;
-
-    background: var(--primary);
-
-    color: var(--white);
-
-    font-family: "Playfair Display", serif;
-    font-weight: 800;
-
-    border: 3px solid var(--secondary);
+    display: block;
 }
 
 .logo-text {
     display: flex;
     flex-direction: column;
-
     line-height: 1.05;
 }
 
 .logo-text strong {
     font-size: 15px;
     letter-spacing: 1px;
+    color: #171717;
 }
 
 .logo-text span {
-    color: var(--primary);
+    color: #8b1e2d;
     font-size: 10px;
     letter-spacing: 2px;
     font-weight: 700;
 }
-
 
 /* NAVIGATION */
 
@@ -1289,6 +1270,18 @@ button {
     .footer-bottom .container {
         flex-direction: column;
         gap: 5px;
+    }
+       .college-logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .logo-text strong {
+        font-size: 13px;
+    }
+
+    .logo-text span {
+        font-size: 8px;
     }
 
 }
