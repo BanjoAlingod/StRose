@@ -88,6 +88,13 @@ button {
 
 /* LOGO */
 
+.college-logo {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    display: block;
+}
+
 .logo {
     display: flex;
     align-items: center;
