@@ -26,7 +26,7 @@
 
 <!-- ================= HEADER ================= -->
 
-<header class="header">
+<header class="header" data-tour="header">
 
     <div class="container nav-container">
 
@@ -74,7 +74,11 @@
 
 <!-- ================= HERO ================= -->
 
-<section class="hero" id="home">
+<section
+    class="hero"
+    id="home"
+    data-tour="hero"
+>
 
     <div class="hero-overlay"></div>
 
@@ -163,7 +167,11 @@
 
 <!-- ================= ANNOUNCEMENTS ================= -->
 
-<section class="section announcements" id="announcements">
+<section
+    class="section announcements"
+    id="announcements"
+    data-tour="announcements"
+>
 
     <div class="container">
 
@@ -305,7 +313,11 @@
 
 <!-- ================= COURSES ================= -->
 
-<section class="section courses-section" id="courses">
+<section
+    class="section courses-section"
+    id="courses"
+    data-tour="courses"
+>
 
     <div class="container">
 
@@ -561,7 +573,11 @@
 
 <!-- ================= CONTACT ================= -->
 
-<section class="section contact-section" id="contact">
+<section
+    class="section contact-section"
+    id="contact"
+    data-tour="contact"
+>
 
     <div class="container">
 
@@ -750,6 +766,89 @@
     </div>
 
 </div>
+
+
+<script src="script.js"></script>
+<!-- =====================================================
+     WEBSITE GUIDED TOUR
+===================================================== -->
+
+<div id="tourOverlay" class="tour-overlay">
+
+    <div id="tourHighlight" class="tour-highlight"></div>
+
+    <div id="tourTooltip" class="tour-tooltip">
+
+        <div class="tour-progress">
+            <span id="tourStepNumber">1</span>
+            /
+            <span id="tourTotalSteps">6</span>
+        </div>
+
+        <button
+            id="tourClose"
+            class="tour-close"
+            aria-label="Close tour"
+        >
+            ×
+        </button>
+
+        <div class="tour-icon" id="tourIcon">
+            👋
+        </div>
+
+        <h3 id="tourTitle">
+            Welcome to St. Rose College
+        </h3>
+
+        <p id="tourDescription">
+            Let us give you a quick tour of the website.
+        </p>
+
+        <div class="tour-actions">
+
+            <button
+                id="tourSkip"
+                class="tour-skip"
+            >
+                Skip Tour
+            </button>
+
+            <div class="tour-navigation">
+
+                <button
+                    id="tourBack"
+                    class="tour-btn tour-back"
+                >
+                    ← Back
+                </button>
+
+                <button
+                    id="tourNext"
+                    class="tour-btn tour-next"
+                >
+                    Next →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Start Tour Button -->
+
+<button
+    id="startTour"
+    class="start-tour"
+    title="Take a website tour"
+>
+    🧭
+    <span>Website Tour</span>
+</button>
 
 
 <script src="script.js"></script>
