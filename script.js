@@ -212,7 +212,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 /* =====================================================
-   ST. ROSE COLLEGE WEBSITE TOUR
+   ST. ROSE COLLEGE
+   RESPONSIVE WEBSITE TOUR
 ===================================================== */
 
 const tourSteps = [
@@ -230,7 +231,7 @@ const tourSteps = [
         icon: "🧭",
         title: "Website Navigation",
         description:
-            "Use the navigation menu to quickly access Home, Announcements, Courses, Faculty, About, and Contact."
+            "Use the navigation menu to quickly access Home, Announcements, Courses, About, and Contact."
     },
 
     {
@@ -254,7 +255,7 @@ const tourSteps = [
         icon: "👨‍🏫",
         title: "Meet the Faculty",
         description:
-            "Get to know the Computer Science faculty, including their professional backgrounds and areas of expertise."
+            "Get to know the faculty members and learn about their professional backgrounds and areas of expertise."
     },
 
     {
@@ -262,13 +263,15 @@ const tourSteps = [
         icon: "📍",
         title: "Contact St. Rose College",
         description:
-            "Find the school's location and contact information, or visit the official Facebook page for additional updates."
+            "Find the school's location, contact information, and official Facebook page."
     }
 
 ];
 
 
-let currentTourStep = 0;
+/* =====================================================
+   TOUR ELEMENTS
+===================================================== */
 
 const tourOverlay =
     document.getElementById("tourOverlay");
@@ -310,86 +313,97 @@ const startTour =
     document.getElementById("startTour");
 
 
-tourTotalSteps.textContent =
-    tourSteps.length;
+let currentTourStep = 0;
 
 
 /* =====================================================
-   START TOUR
+   CHECK TOUR ELEMENTS
 ===================================================== */
 
-function startWebsiteTour() {
+if (
+    tourOverlay &&
+    tourHighlight &&
+    tourTooltip &&
+    tourIcon &&
+    tourTitle &&
+    tourDescription &&
+    tourStepNumber &&
+    tourTotalSteps &&
+    tourNext &&
+    tourBack &&
+    tourSkip &&
+    tourClose &&
+    startTour
+) {
 
-    currentTourStep = 0;
-
-    tourOverlay.classList.add("active");
-
-    document.body.style.overflow = "hidden";
-
-    showTourStep();
-
-}
-
-
-/* =====================================================
-   SHOW STEP
-===================================================== */
-
-function showTourStep() {
-
-    const step =
-        tourSteps[currentTourStep];
-
-    const target =
-        document.querySelector(
-            `[data-tour="${step.target}"]`
-        );
+    tourTotalSteps.textContent =
+        tourSteps.length;
 
 
-    if (!target) {
+    /* =================================================
+       START TOUR
+    ================================================= */
 
-        console.warn(
-            `Tour target not found: ${step.target}`
-        );
+    function startWebsiteTour() {
 
-        return;
+        currentTourStep = 0;
+
+        tourOverlay.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+
+        showTourStep();
 
     }
 
 
-    /* Scroll target into view */
+    /* =================================================
+       SHOW TOUR STEP
+    ================================================= */
 
-    target.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
+    function showTourStep() {
 
-
-    setTimeout(() => {
-
-        const rect =
-            target.getBoundingClientRect();
+        const step =
+            tourSteps[currentTourStep];
 
 
-        const padding = 7;
+        const target =
+            document.querySelector(
+                `[data-tour="${step.target}"]`
+            );
 
 
-        /* Highlight */
+        /* Target does not exist */
 
-        tourHighlight.style.top =
-            `${rect.top - padding}px`;
+        if (!target) {
 
-        tourHighlight.style.left =
-            `${rect.left - padding}px`;
+            console.warn(
+                `Tour target not found: ${step.target}`
+            );
 
-        tourHighlight.style.width =
-            `${rect.width + padding * 2}px`;
+            /*
+             * If Faculty hasn't been added yet,
+             * automatically skip to the next step.
+             */
 
-        tourHighlight.style.height =
-            `${rect.height + padding * 2}px`;
+            if (
+                currentTourStep <
+                tourSteps.length - 1
+            ) {
+
+                currentTourStep++;
+
+                showTourStep();
+
+            }
+
+            return;
+        }
 
 
-        /* Text */
+        /* =================================================
+           UPDATE CONTENT
+        ================================================= */
 
         tourIcon.textContent =
             step.icon;
@@ -404,7 +418,9 @@ function showTourStep() {
             currentTourStep + 1;
 
 
-        /* Back button */
+        /* =================================================
+           BUTTONS
+        ================================================= */
 
         if (currentTourStep === 0) {
 
@@ -414,12 +430,10 @@ function showTourStep() {
         } else {
 
             tourBack.style.display =
-                "block";
+                "inline-flex";
 
         }
 
-
-        /* Next button */
 
         if (
             currentTourStep ===
@@ -437,212 +451,361 @@ function showTourStep() {
         }
 
 
+        /* =================================================
+           MOBILE / DESKTOP SCROLL
+        ================================================= */
+
+        const isMobile =
+            window.innerWidth <= 700;
+
+
+        target.scrollIntoView({
+
+            behavior: "smooth",
+
+            block:
+                isMobile
+                    ? "start"
+                    : "center"
+
+        });
+
+
+        /*
+         * Wait for smooth scrolling before
+         * positioning the highlight.
+         */
+
+        setTimeout(() => {
+
+            positionTour(target);
+
+        }, isMobile ? 500 : 400);
+
+    }
+
+
+    /* =================================================
+       POSITION HIGHLIGHT
+    ================================================= */
+
+    function positionTour(target) {
+
+        const rect =
+            target.getBoundingClientRect();
+
+
+        const isMobile =
+            window.innerWidth <= 700;
+
+
+        const padding =
+            isMobile ? 5 : 8;
+
+
+        tourHighlight.style.top =
+            `${rect.top - padding}px`;
+
+        tourHighlight.style.left =
+            `${rect.left - padding}px`;
+
+        tourHighlight.style.width =
+            `${rect.width + padding * 2}px`;
+
+        tourHighlight.style.height =
+            `${rect.height + padding * 2}px`;
+
+
         positionTooltip(rect);
 
-    }, 400);
-
-}
+    }
 
 
-/* =====================================================
-   POSITION TOOLTIP
-===================================================== */
+    /* =================================================
+       POSITION TOOLTIP
+    ================================================= */
 
-function positionTooltip(rect) {
+    function positionTooltip(rect) {
 
-    const tooltipWidth =
-        tourTooltip.offsetWidth;
-
-    const tooltipHeight =
-        tourTooltip.offsetHeight;
-
-    const margin = 20;
+        const isMobile =
+            window.innerWidth <= 700;
 
 
-    let top =
-        rect.bottom + 20;
-
-    let left =
-        rect.left;
+        const margin =
+            isMobile ? 12 : 20;
 
 
-    /* Prevent right overflow */
+        const tooltipWidth =
+            Math.min(
+                tourTooltip.offsetWidth,
+                window.innerWidth - margin * 2
+            );
 
-    if (
-        left + tooltipWidth >
-        window.innerWidth - margin
-    ) {
 
-        left =
-            window.innerWidth -
-            tooltipWidth -
-            margin;
+        const tooltipHeight =
+            tourTooltip.offsetHeight;
+
+
+        let top;
+        let left;
+
+
+        /* =================================================
+           MOBILE
+        ================================================= */
+
+        if (isMobile) {
+
+            /*
+             * On phones the tooltip is fixed near
+             * the bottom of the screen.
+             */
+
+            left = margin;
+
+            top =
+                window.innerHeight -
+                tooltipHeight -
+                margin;
+
+
+            /*
+             * If the tooltip is too tall,
+             * move it to the top.
+             */
+
+            if (
+                tooltipHeight >
+                window.innerHeight * 0.55
+            ) {
+
+                top = margin;
+
+            }
+
+        }
+
+
+        /* =================================================
+           DESKTOP
+        ================================================= */
+
+        else {
+
+            left = rect.left;
+
+            top =
+                rect.bottom + 20;
+
+
+            /* Right edge */
+
+            if (
+                left + tooltipWidth >
+                window.innerWidth - margin
+            ) {
+
+                left =
+                    window.innerWidth -
+                    tooltipWidth -
+                    margin;
+
+            }
+
+
+            /* Left edge */
+
+            if (left < margin) {
+
+                left = margin;
+
+            }
+
+
+            /* Bottom edge */
+
+            if (
+                top + tooltipHeight >
+                window.innerHeight - margin
+            ) {
+
+                top =
+                    rect.top -
+                    tooltipHeight -
+                    20;
+
+            }
+
+
+            /* Top edge */
+
+            if (top < margin) {
+
+                top = margin;
+
+            }
+
+        }
+
+
+        tourTooltip.style.width =
+            `${tooltipWidth}px`;
+
+        tourTooltip.style.left =
+            `${left}px`;
+
+        tourTooltip.style.top =
+            `${top}px`;
 
     }
 
 
-    /* Prevent left overflow */
+    /* =================================================
+       NEXT
+    ================================================= */
 
-    if (left < margin) {
-
-        left = margin;
-
-    }
-
-
-    /* If tooltip doesn't fit below,
-       place it above */
-
-    if (
-        top + tooltipHeight >
-        window.innerHeight - margin
-    ) {
-
-        top =
-            rect.top -
-            tooltipHeight -
-            20;
-
-    }
-
-
-    /* If it doesn't fit above either,
-       center vertically */
-
-    if (top < margin) {
-
-        top =
-            (window.innerHeight -
-            tooltipHeight) / 2;
-
-    }
-
-
-    tourTooltip.style.top =
-        `${top}px`;
-
-    tourTooltip.style.left =
-        `${left}px`;
-
-}
-
-
-/* =====================================================
-   NEXT
-===================================================== */
-
-function nextTourStep() {
-
-    if (
-        currentTourStep <
-        tourSteps.length - 1
-    ) {
-
-        currentTourStep++;
-
-        showTourStep();
-
-    } else {
-
-        finishTour();
-
-    }
-
-}
-
-
-/* =====================================================
-   BACK
-===================================================== */
-
-function previousTourStep() {
-
-    if (currentTourStep > 0) {
-
-        currentTourStep--;
-
-        showTourStep();
-
-    }
-
-}
-
-
-/* =====================================================
-   CLOSE / FINISH
-===================================================== */
-
-function finishTour() {
-
-    tourOverlay.classList.remove("active");
-
-    document.body.style.overflow = "";
-
-}
-
-
-/* =====================================================
-   EVENTS
-===================================================== */
-
-startTour.addEventListener(
-    "click",
-    startWebsiteTour
-);
-
-tourNext.addEventListener(
-    "click",
-    nextTourStep
-);
-
-tourBack.addEventListener(
-    "click",
-    previousTourStep
-);
-
-tourSkip.addEventListener(
-    "click",
-    finishTour
-);
-
-tourClose.addEventListener(
-    "click",
-    finishTour
-);
-
-
-/* ESC KEY */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
+    function nextTourStep() {
 
         if (
-            event.key === "Escape" &&
-            tourOverlay.classList.contains("active")
+            currentTourStep <
+            tourSteps.length - 1
         ) {
+
+            currentTourStep++;
+
+            showTourStep();
+
+        } else {
 
             finishTour();
 
         }
 
     }
-);
 
 
-/* WINDOW RESIZE */
+    /* =================================================
+       BACK
+    ================================================= */
 
-window.addEventListener(
-    "resize",
-    function() {
+    function previousTourStep() {
 
-        if (
-            tourOverlay.classList.contains("active")
-        ) {
+        if (currentTourStep > 0) {
+
+            currentTourStep--;
 
             showTourStep();
 
         }
 
     }
-);
+
+
+    /* =================================================
+       FINISH
+    ================================================= */
+
+    function finishTour() {
+
+        tourOverlay.classList.remove("active");
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    /* =================================================
+       BUTTON EVENTS
+    ================================================= */
+
+    startTour.addEventListener(
+        "click",
+        startWebsiteTour
+    );
+
+
+    tourNext.addEventListener(
+        "click",
+        nextTourStep
+    );
+
+
+    tourBack.addEventListener(
+        "click",
+        previousTourStep
+    );
+
+
+    tourSkip.addEventListener(
+        "click",
+        finishTour
+    );
+
+
+    tourClose.addEventListener(
+        "click",
+        finishTour
+    );
+
+
+    /* =================================================
+       ESC KEY
+    ================================================= */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Escape" &&
+                tourOverlay.classList.contains("active")
+            ) {
+
+                finishTour();
+
+            }
+
+        }
+    );
+
+
+    /* =================================================
+       WINDOW RESIZE
+    ================================================= */
+
+    let resizeTimer;
+
+    window.addEventListener(
+        "resize",
+        function() {
+
+            clearTimeout(resizeTimer);
+
+            resizeTimer = setTimeout(() => {
+
+                if (
+                    tourOverlay.classList.contains("active")
+                ) {
+
+                    const step =
+                        tourSteps[currentTourStep];
+
+                    const target =
+                        document.querySelector(
+                            `[data-tour="${step.target}"]`
+                        );
+
+                    if (target) {
+
+                        positionTour(target);
+
+                    }
+
+                }
+
+            }, 150);
+
+        }
+    );
+
+}
